@@ -14,7 +14,7 @@ const fetchHomePage = async ({ user }) => {
   const name = $('.p-name').text().trim();
   const nickname = $('.p-nickname').text().trim();
   const statusIcon = $('.user-status-emoji-container .emoji').attr('src');
-  const status = $('.user-status-message-wrapper').text().trim();
+  const status = $('.user-status-message-wrapper').first().text().trim();
   const $counter = $('a.Link--secondary');
   const followers = Number($counter.eq(0).children('span').text().trim());
   const following = Number($counter.eq(1).children('span').text().trim());
