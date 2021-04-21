@@ -10,6 +10,7 @@ const fetchHomePage = async ({ user }) => {
   const resp = await fetch(url).then((resp) => resp.text());
   const $ = cheerio.load(resp);
   const avatar = $('.avatar.avatar-user').attr('src');
+  const userID = avatar?.match(/u\/(\d+)?/)?.[1];
   const name = $('.p-name').text().trim();
   const nickname = $('.p-nickname').text().trim();
   const status = $('summary.js-toggle-user-status-edit').first().text().trim();
@@ -20,13 +21,6 @@ const fetchHomePage = async ({ user }) => {
   const $nav = $('nav.UnderlineNav-body');
   const repositories = Number($nav.children().eq(1).children('span').text().trim());
   const $container = $('.js-calendar-graph-svg').children().first();
-  let info = {};
-  try {
-    info = JSON.parse($container.attr('data-hydro-click'));
-  } catch (e) {
-    console.warn(e);
-  }
-  const userID = info.payload.user_id;
   const count = Number(resp.match(/(\d{1,},*\d*) contributions/)[1].replace(/,/g, ''));
   const contributions = [];
   $container.children().each((index, el) => {
