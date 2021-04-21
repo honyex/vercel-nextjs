@@ -15,7 +15,9 @@ const fetchHomePage = async ({ user }) => {
   const nickname = $('.p-nickname').text().trim();
   const statusIcon = $('.user-status-emoji-container .emoji').attr('src');
   const status = $('.user-status-message-wrapper').first().text().trim();
-  const $counter = $('a.Link--secondary');
+  const bio = $('.js-user-profile-bio').first().text().trim();
+  const $profile = $('.js-profile-editable-area');
+  const $counter = $profile.find('a.Link--secondary');
   const followers = Number($counter.eq(0).children('span').text().trim());
   const following = Number($counter.eq(1).children('span').text().trim());
   const stars = Number($counter.eq(2).children('span').text().trim());
