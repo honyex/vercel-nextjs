@@ -13,7 +13,8 @@ const fetchHomePage = async ({ user }) => {
   const userID = avatar?.match(/u\/(\d+)?/)?.[1];
   const name = $('.p-name').text().trim();
   const nickname = $('.p-nickname').text().trim();
-  const status = $('summary.js-toggle-user-status-edit').first().text().trim();
+  const statusIcon = $('.user-status-emoji-container .emoji').attr('src');
+  const status = $('.user-status-message-wrapper').text().trim();
   const $counter = $('a.Link--secondary');
   const followers = Number($counter.eq(0).children('span').text().trim());
   const following = Number($counter.eq(1).children('span').text().trim());
@@ -61,6 +62,7 @@ const fetchHomePage = async ({ user }) => {
     avatar,
     name,
     nickname,
+    status_icon: statusIcon,
     status,
     followers,
     following,
