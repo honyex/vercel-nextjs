@@ -66,6 +66,7 @@ const fetchHomePage = async ({ user }) => {
     nickname,
     status_icon: statusIcon,
     status,
+    bio,
     followers,
     following,
     stars,
