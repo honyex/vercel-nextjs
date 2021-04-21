@@ -7,7 +7,17 @@ import cheerio from 'cheerio';
  */
 const fetchHomePage = async ({ user }) => {
   const url = `https://github.com/${user}`;
-  const resp = await fetch(url).then((resp) => resp.text());
+  const resp = await fetch(url).then((resp) => {
+    const { status } = resp;
+    if (status >= 200 && status < 300) {
+      return resp.text();
+    } else {
+      return Promise.reject({
+        code: status,
+        message: status === 404 ? `User ${user} not found` : 'Internal Server Error'
+      });
+    }
+  });
   const $ = cheerio.load(resp);
   const avatar = $('.avatar.avatar-user').attr('src');
   const userID = avatar?.match(/u\/(\d+)?/)?.[1];
@@ -84,7 +94,14 @@ export default async (req, res) => {
       message: 'Missing parameter "user"'
     });
   }
-  const resp = await fetchHomePage(req.query);
-  res.statusCode = 200;
-  res.json(resp);
+  try {
+    const resp = await fetchHomePage(req.query);
+    res.statusCode = 200;
+    res.json(resp);
+  } catch (e) {
+    res.statusCode = e.code;
+    res.json({
+      message: e.message
+    });
+  }
 }
